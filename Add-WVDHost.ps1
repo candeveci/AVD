@@ -58,5 +58,5 @@ Start-Process -wait -FilePath $BootLoaderInstaller -ArgumentList "/q"
 LogWriter("Installing WVD agent")
 Start-Process -wait -FilePath $AgentInstaller -ArgumentList "/q RegistrationToken=${wvdRegistrationKey}"
 
-LogWriter("Finally restarting session host")
-Restart-Computer -Force
+#LogWriter("Finally restarting session host")
+#Restart-Computer -Force
