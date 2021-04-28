@@ -18,8 +18,8 @@
 #>
 
 param(
+	[string] $wvdRegistrationKey,
 	[string] $LogDir="$env:windir\system32\logfiles",
-	[string] $wvdRegistrationKey
 )
 
 #Set Variables
