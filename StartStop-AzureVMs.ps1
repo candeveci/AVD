@@ -28,7 +28,7 @@ param(
     [string]$SubscriptionId,
 
     [Parameter(mandatory = $true)]
-    [boolean]$Action,
+    [string]$Action,
     [ValidateSet("Start", "Stop")]
 	
     [Parameter(mandatory = $false)]
