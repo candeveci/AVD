@@ -90,7 +90,7 @@ function Get-LocalDateTime {
     return (Get-Date).ToUniversalTime().AddHours($TimeDiffHrsMin[0]).AddMinutes($TimeDiffHrsMin[1])
 }
 
-# Authenticating
+Authenticating
 
 try {
 
@@ -124,7 +124,7 @@ foreach ($ModuleName in $RequiredModules) {
 
 #Getting Azure VMs
 if ($ResourceGroupName) {
-    Write-Log 'Getting all Azure VMs'
+    Write-Log 'Getting all Azure VMs based on ResourceGroupName'
     $AzureVMs = Get-AzVM -ResourceGroupName $ResourceGroupName
     if (!$AzureVMs) {
         Write-Log "There are no Azure Vms in the ResourceGroup $ResourceGroupName."
@@ -133,7 +133,7 @@ if ($ResourceGroupName) {
     }
 }
 elseif ($TagName) {
-    Write-Log 'Getting all Azure VMs'
+    Write-Log 'Getting all Azure VMs based on Tag'
     $AzureVMs = Get-AzVM | Where-Object { $_.Tags[$TagName] }
     if (!$AzureVMs) {
         Write-Log "There are no Azure Vms with tagName $TagName."
@@ -144,22 +144,23 @@ elseif ($TagName) {
 
 #Evaluate eacht session hosts
 foreach ($vm in $AzureVMs) {
-    $ResourceGroupName = $vm.ResourceGroupName
+    $RGName = $vm.ResourceGroupName
     $vmName = $vm.Name
     #Gathering information about the running state
-    $VMStatus = (Get-AzVM -ResourceGroupName $ResourceGroupName -Name $vmName -Status).Statuses[1].Code
+    $VMStatus = (Get-AzVM -ResourceGroupName $RGName -Name $vmName -Status).Statuses[1].Code
+    Write-Log $VMStatus
     #Gathering information about tags
-    $VMSkip = (Get-AzVm -ResourceGroupName $ResourceGroupName -Name $vmName).Tags.Keys
+    $VMSkip = (Get-AzVm -ResourceGroupName $RGName -Name $vmName).Tags.Keys
 
     # VM is Deallocated   
     if ($VMStatus -eq 'PowerState/deallocated') {
         if ($Action -eq 'Start') {
             Write-Log "$vmName is in a deallocated state, starting VM"
-            $StartVM = Start-AzVM -Name $vmName -ResourceGroupName $ResourceGroupName
+            $StartVM = Start-AzVM -Name $vmName -ResourceGroupName $RGName
             Write-Log "Starting $vmName ended with status: $($StartVM.Status)"
         }
         if ($Action -eq 'Stop') {
-            Write-Log "$vmName is already stopped"
+            Write-Log "$vmName is already stopped"2
             continue
         }
     }
@@ -172,12 +173,12 @@ foreach ($vm in $AzureVMs) {
     if ($VMStatus -eq 'PowerState/stopped') {
         if ($Action -eq 'Start') {
             Write-Log "$vmName is stopped, starting VM"
-            $StartVM = Start-AzVM -Name $vmName -ResourceGroupName $ResourceGroupName
+            $StartVM = Start-AzVM -Name $vmName -ResourceGroupName $RGName
             Write-Log "Starting $vmName ended with status: $($StartVM.Status)"
         }
         if ($Action -eq 'Stop') {
             Write-Log "$vmName is stopped, deallocationg VM"
-            $StopVM = Stop-AzVM -Name $vmName -ResourceGroupName $ResourceGroupName
+            $StopVM = Stop-AzVM -Name $vmName -ResourceGroupName $RGName
             Write-Log "Starting $vmName ended with status: $($StopVM.Status)"
         }
     }
@@ -190,13 +191,14 @@ foreach ($vm in $AzureVMs) {
         }
         if ($Action -eq 'Stop') {
             Write-Log "$vmName is running, deallocationg VM"
-            $StopVM = Stop-AzVM -Name $vmName -ResourceGroupName $ResourceGroupName
+            $StopVM = Stop-AzVM -Name $vmName -ResourceGroupName $RGName
             Write-Log "Starting $vmName ended with status: $($StopVM.Status)"
         }
     }  
 }
 Write-Log 'All VMs are processed'
 Write-Log 'Disconnecting AZ Session'
+
 #disconnect
 $DisconnectInfo = Disconnect-AzAccount
 
