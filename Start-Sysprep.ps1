@@ -41,6 +41,7 @@ LogWriter("Starting sysprepping")
 		write-host("Removing package: "+$package.packagefullname)
 		Remove-AppxPackage -AllUsers -Package $package.packagefullname
 	}
+	Get-AppxPackage | where{$_.Name -match "winget"} | Remove-AppxPackage
 	
 	LogWriter("Saving time zone info for re-deploy")
 	$timeZone=(Get-TimeZone).Id
