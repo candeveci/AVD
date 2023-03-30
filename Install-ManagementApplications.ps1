@@ -46,8 +46,9 @@ $client.DownloadFileTaskAsync("https://ardownload2.adobe.com/pub/adobe/reader/wi
 #Extract AzFilesHybrid files
 Expand-Archive -Path .\AzFilesHybrid.zip .\
 
-#Rename PolicyDefinitions to PolicyDefitionsOld
+#Rename PolicyDefinitions to PolicyDefitionsOld and create new folder
 Rename-Item C:\Windows\PolicyDefinitions C:\Windows\PolicyDefinitionsOld
+New-Item -Path 'C:\Windows\PolicyDefinitions' -ItemType Directory
 
 #Install Windows 11 ADMX Files and copy to PolicyDefitions
 msiexec /i C:\Temp\Windows11ADMX.msi /qn
