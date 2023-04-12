@@ -51,7 +51,7 @@ Rename-Item C:\Windows\PolicyDefinitions C:\Windows\PolicyDefinitionsOld
 New-Item -Path 'C:\Windows\PolicyDefinitions' -ItemType Directory
 
 #Install Windows 11 ADMX Files and copy to PolicyDefitions
-msiexec /i C:\Temp\Windows11ADMX.msi /qn
+Start-Process -FilePath msiexec -ArgumentList /i, C:\Temp\Windows11ADMX.msi, /qn -Wait
 Robocopy /S 'C:\Program Files (x86)\Microsoft Group Policy\Windows 11 September 2022 Update (22H2)\PolicyDefinitions' C:\Windows\PolicyDefinitions
 
 #FSLogix ADMX
@@ -60,7 +60,7 @@ Copy-Item C:\Temp\FSLogix\fslogix.admx C:\Windows\PolicyDefinitions
 Copy-Item C:\Temp\FSLogix\fslogix.adml C:\Windows\PolicyDefinitions\en-us
 
 #Office 365 ADMX
-C:\Temp\admintemplates_x64_5391-1000_en-us.exe /extract:C:\Temp\ADMX /quiet
+Start-Process -FilePath C:\Temp\admintemplates_x64_5391-1000_en-us.exe -ArgumentList /extract:C:\Temp\ADMX, /quiet -Wait
 Robocopy /S C:\Temp\ADMX\admx C:\Windows\PolicyDefinitions
 
 #Adobe Reader ADMX
