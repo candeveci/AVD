@@ -43,21 +43,21 @@ if (!(Test-Path -Path $RootFolder)) { New-Item -Path $RootFolder -ItemType Direc
 
 
 if ($isAzureADJoined) {
-    LogWriter("Azure ad join preview flag enabled")
+    LogWriter("Azure AD Joined Registry settings")
     $registryPath = "HKLM:\SOFTWARE\Microsoft\RDInfraAgent\AzureADJoin"
     if (Test-Path -Path $registryPath) {
         LogWriter("Setting reg key JoinAzureAd")
-        New-ItemProperty -Path $registryPath -Name JoinAzureAD -PropertyType DWord -Value 0x01
+        New-ItemProperty -Path $registryPath -Name JoinAzureAD -PropertyType DWord -Value 0x01 -Force
     }
     else {
         LogWriter("Creating path for azure ad join registry keys: $registryPath")
         New-item -Path $registryPath -Force | Out-Null
         LogWriter("Setting reg key JoinAzureAD")
-        New-ItemProperty -Path $registryPath -Name JoinAzureAD -PropertyType DWord -Value 0x01
+        New-ItemProperty -Path $registryPath -Name JoinAzureAD -PropertyType DWord -Value 0x01 -Force 
     }
     if ($isIntuneManaged) {
         LogWriter("Setting reg key MDMEnrollmentId")
-        New-ItemProperty -Path $registryPath -Name MDMEnrollmentId -PropertyType String -Value "0000000a-0000-0000-c000-000000000000"
+        New-ItemProperty -Path $registryPath -Name MDMEnrollmentId -PropertyType String -Value "0000000a-0000-0000-c000-000000000000" - Force
     }
 }
 
