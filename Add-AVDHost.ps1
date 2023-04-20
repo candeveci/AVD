@@ -55,7 +55,7 @@ if ($isIntuneManaged) {
         LogWriter("Setting reg key JoinAzureAD")
         New-ItemProperty -Path $registryPath -Name JoinAzureAD -PropertyType DWord -Value 0x01
     }
-    if ($MdmId) {
+    if ($isIntuneManaged) {
         LogWriter("Setting reg key MDMEnrollmentId")
         New-ItemProperty -Path $registryPath -Name MDMEnrollmentId -PropertyType String -Value "0000000a-0000-0000-c000-000000000000"
     }
