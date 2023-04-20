@@ -42,7 +42,7 @@ $LogFile = $LogDir + "\WVD.addAVDHost.log"
 if (!(Test-Path -Path $RootFolder)) { New-Item -Path $RootFolder -ItemType Directory }
 
 
-if ($isIntuneManaged) {
+if ($isAzureADJoined) {
     Write-Log "Azure ad join preview flag enabled"
     $registryPath = "HKLM:\SOFTWARE\Microsoft\RDInfraAgent\AzureADJoin"
     if (Test-Path -Path $registryPath) {
