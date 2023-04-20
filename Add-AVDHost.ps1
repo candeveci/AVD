@@ -20,8 +20,8 @@
 param(
     [string] $avdRegistrationKey,
     [string] $LogDir = "$env:windir\system32\logfiles",
-    [bool] $isAzureADJoined = $false,
-    [bool] $isIntuneManaged = $false	
+    [string] $isAzureADJoined = "false",
+    [string] $isIntuneManaged = "false"	
 )
 
 #Set Variables
@@ -42,7 +42,7 @@ $LogFile = $LogDir + "\WVD.addAVDHost.log"
 if (!(Test-Path -Path $RootFolder)) { New-Item -Path $RootFolder -ItemType Directory }
 
 
-if ($isAzureADJoined) {
+if ($isAzureADJoined -eq "true") {
     LogWriter("Azure AD Joined Registry settings")
     $registryPath = "HKLM:\SOFTWARE\Microsoft\RDInfraAgent\AzureADJoin"
     if (Test-Path -Path $registryPath) {
@@ -55,7 +55,7 @@ if ($isAzureADJoined) {
         LogWriter("Setting reg key JoinAzureAD")
         New-ItemProperty -Path $registryPath -Name JoinAzureAD -PropertyType DWord -Value 0x01 -Force 
     }
-    if ($isIntuneManaged) {
+    if ($isIntuneManaged -eq "true") {
         LogWriter("Setting reg key MDMEnrollmentId")
         New-ItemProperty -Path $registryPath -Name MDMEnrollmentId -PropertyType String -Value "0000000a-0000-0000-c000-000000000000" - Force
     }
