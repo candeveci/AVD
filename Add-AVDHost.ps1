@@ -43,7 +43,7 @@ if (!(Test-Path -Path $RootFolder)) { New-Item -Path $RootFolder -ItemType Direc
 
 
 if ($isAzureADJoined) {
-    Write-Log "Azure ad join preview flag enabled"
+    LogWriter("Azure ad join preview flag enabled")
     $registryPath = "HKLM:\SOFTWARE\Microsoft\RDInfraAgent\AzureADJoin"
     if (Test-Path -Path $registryPath) {
         LogWriter("Setting reg key JoinAzureAd")
