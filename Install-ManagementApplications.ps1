@@ -73,3 +73,6 @@ REG ADD "HKLM\SOFTWARE\Policies\Microsoft\Windows\Group Policy" /v EnableLocalSt
 #Copy Module to Path
 .\CopyToPSPath.ps1
 
+#Set ExecutionPolicy
+Set-ExecutionPolicy -ExecutionPolicy Restricted
+
