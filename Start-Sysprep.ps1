@@ -42,6 +42,9 @@ LogWriter("Starting sysprepping")
 		Remove-AppxPackage -AllUsers -Package $package.packagefullname
 	}
 	Get-AppxPackage | where{$_.Name -match "winget"} | Remove-AppxPackage
+ 	#Remove Winget and Notepad, otherwise sysprep fails
+	Get-AppxPackage -Name Notepad* | Remove-AppxPackage
+	Get-AppxPackage -Name Microsoft.Winget.Source | Remove-AppxPackage
 	
 	LogWriter("Saving time zone info for re-deploy")
 	$timeZone=(Get-TimeZone).Id
