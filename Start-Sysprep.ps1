@@ -54,4 +54,4 @@ LogWriter("Starting sysprepping")
 	New-ItemProperty -Path "HKLM:\SOFTWARE\InSpark\AVD.Runtime" -Name "TimeZone.Origin" -Value $timeZone -force
 	
 	LogWriter("Starting sysprep to generalize session host")
-	Start-Process -FilePath "$env:windir\System32\Sysprep\sysprep" -ArgumentList "/generalize /oobe /shutdown /mode:vm"
+	Start-Process -FilePath "$env:windir\System32\Sysprep\sysprep" -ArgumentList "/generalize /oobe /shutdown"
